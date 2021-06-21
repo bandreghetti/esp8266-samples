@@ -4,8 +4,8 @@
 #include <reboot.h>
 
 #ifndef STASSID
-#define STASSID "my-ssid"
-#define STAPSK "my-password"
+#define STASSID "bad-net-2.4GHz"
+#define STAPSK "QeasdWF?Ejenam"
 #endif
 
 const char *ssid = STASSID;
@@ -23,7 +23,8 @@ void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(LED_BUILTIN_AUX, OUTPUT);
-  digitalWrite(LED_BUILTIN_AUX, HIGH);
+  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(LED_BUILTIN_AUX, LOW);
 
   // Configures static IP address
   if (!WiFi.config(local_IP, gateway, subnet, 0, 0))
@@ -40,9 +41,18 @@ void setup()
   SetupOTA();
 
   UDP.Listen(UDP_PORT);
+
+  digitalWrite(LED_BUILTIN_AUX, HIGH);
 }
 
+unsigned long lastDebug;
+
 void loop(void) {
+  auto now = millis();
+  if (now - lastDebug > 500) {
+    lastDebug = now;
+    UDP.Debug(String(now));
+  }
   UDP.Loop();
   LoopOTA();
 }
