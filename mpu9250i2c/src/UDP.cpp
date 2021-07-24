@@ -30,9 +30,6 @@ void UDPClient::Debug(String msg)
 {
     if (this->debug)
     {
-        if (!msg.endsWith("\n")) {
-            msg = msg + "\n";
-        }
         this->client.beginPacket(this->remoteIP, this->remotePort);
         this->client.write(msg.c_str());
         this->client.endPacket();
