@@ -49,9 +49,11 @@ unsigned long lastDebug;
 
 void loop(void) {
   auto now = millis();
-  if (now - lastDebug > 500) {
+  if (now - lastDebug >= 500) {
+    digitalWrite(LED_BUILTIN, LOW);
     lastDebug = now;
     UDP.Debug(String(now));
+    digitalWrite(LED_BUILTIN, HIGH);
   }
   UDP.Loop();
   LoopOTA();
